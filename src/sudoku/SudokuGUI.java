@@ -111,7 +111,6 @@ public class SudokuGUI
 						selectedSquare.setNumber(Integer.parseInt(digButton.getText()));
 						
 						// check validity
-						// solver.isValidNumber(selectedSquare.getRow(), selectedSquare.getColumn());
 						
 						selectedSquare.setText("" + digButton.getText());
 					}
