@@ -12,6 +12,11 @@ public class LaunchGUI {
 	private JButton medium;
 	private JButton hard;
 	
+	/**
+	 * Constructor for the GUI Launcher of Sudoku
+	 * Allows the user to select the difficulty of the Sudoku puzzle (easy, medium, hard)
+	 * Launches Sudoku Board GUI after selecting difficulty
+	 */
 	public LaunchGUI() {
 //		  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 //		  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -97,6 +102,15 @@ public class LaunchGUI {
 				  { 5, 0, 0, 0, 0, 0, 0, 7, 3 },
 				  { 0, 0, 2, 0, 1, 0, 0, 0, 0 },
 				  { 0, 0, 0, 0, 4, 0, 0, 0, 9 }
+//				{9, 8, 7, 6, 5, 4, 3, 2, 1}, 
+//				{2, 4, 6, 1, 7, 3, 9, 8, 5},
+//				{3, 5, 1, 9, 2, 8, 7, 4, 6},
+//				{1, 2, 8, 5, 3, 7, 6, 9, 4},
+//				{6, 3, 4, 8, 9, 2, 1, 5, 7},
+//				{7, 9, 5, 4, 6, 1, 8, 3, 2},
+//				{5, 1, 9, 2, 8, 6, 4, 7, 3},
+//				{4, 7, 2, 3, 1, 9, 5, 6, 8},
+//				{8, 6, 3, 7, 4, 5, 2, 1, 0}
 			};
 		hard.addActionListener(new ActionListener() {
 

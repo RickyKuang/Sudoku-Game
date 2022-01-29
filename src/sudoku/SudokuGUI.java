@@ -13,7 +13,7 @@ public class SudokuGUI
 	
 	// Sudoku Square
 	private SudokuSquare[][] sudokuSquareButtons;
-	private JLabel selectedSquareLabel;
+	private JLabel labelDisplay;
 	private SudokuSquare selectedSquare;
 	private SudokuSquare prevSquare;
 	private Color prevColor;
@@ -23,13 +23,20 @@ public class SudokuGUI
 	private ArrayList<JButton> buttons;
 	
 	// Other
-	private JLabel timeLabel;
-	private boolean gameWon;
+	private int empty;
 	private int[][] puzzle;
 	private int[][] solution;
+	private long beginGame;
+	private long endGame;
 	
+	/**
+	 * Constructor for GUI of Sudoku board.
+	 * 
+	 * @param puzzle Creates board based on puzzle in the parameter.
+	 */
 	public SudokuGUI(int[][] puzzle) {
 		// Solve puzzle with solver
+		this.empty = 81;
 		this.puzzle = puzzle;
 		this.solution = puzzle.clone();
 		SudokuSolver solver = new SudokuSolver(this.solution);
@@ -47,7 +54,7 @@ public class SudokuGUI
 		sudokuBoard = new JPanel(new GridLayout(9,9));
 		sudokuBoard.setSize(new Dimension(400, 400));
 		sudokuSquareButtons = new SudokuSquare[9][9];
-		selectedSquareLabel = new JLabel("No Selection");
+		labelDisplay = new JLabel("No Selection");
 		selectedSquare = new SudokuSquare(0, 0, 0, false);
 
 		for (int i = 0; i < 9; i++) {
@@ -57,6 +64,7 @@ public class SudokuGUI
 				if (puzzle[i][j] != 0) {
 					cellNumber = puzzle[i][j];
 					filled = true;
+					empty--;
 				}
 				
 				SudokuSquare sudokuSquare = new SudokuSquare(cellNumber, i+1, j+1, filled);
@@ -86,7 +94,7 @@ public class SudokuGUI
 						selectedSquare = sudokuSquare;
 						prevColor = selectedSquare.getBackground();
 						selectedSquare.setBackground(Color.RED);
-						selectedSquareLabel.setText("Row: " + selectedSquare.getRow() + ", Column: " + selectedSquare.getColumn());
+						labelDisplay.setText("Row: " + selectedSquare.getRow() + ", Column: " + selectedSquare.getColumn());
 					}
 					
 				});
@@ -105,14 +113,29 @@ public class SudokuGUI
 			
 			digButton.addActionListener(new ActionListener() {
 
+				/**
+				 * Method that inserts a number b/w 1 and 9 in the selected square if the value is valid.
+				 */
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (selectedSquare.getFilled() == false) {
-						selectedSquare.setNumber(Integer.parseInt(digButton.getText()));
+						solver.setPuzzleSquare(selectedSquare.getRow()-1, selectedSquare.getColumn()-1, Integer.parseInt(digButton.getText()));
 						
 						// check validity
+						if (!solver.isValidNumber(selectedSquare.getRow()-1, selectedSquare.getColumn()-1)) {
+							labelDisplay.setText("CONFLICT with: Row " + (solver.getInvalidRow()+1) + ", Column " + (solver.getInvalidCol()+1));
+							
+							solver.setPuzzleSquare(selectedSquare.getRow()-1, selectedSquare.getColumn()-1, 0);
+						}
 						
-						selectedSquare.setText("" + digButton.getText());
+						else {
+							selectedSquare.setNumber(Integer.parseInt(digButton.getText()));
+							selectedSquare.setText("" + digButton.getText());
+							empty--;
+							
+							if (gameWon())
+								labelDisplay.setText("GAME WON. THANKS FOR PLAYING");
+						}
 					}
 				}
 				
@@ -126,6 +149,9 @@ public class SudokuGUI
 		clearButton.setPreferredSize(new Dimension(30,30));
 		clearButton.addActionListener(new ActionListener() {
 
+			/**
+			 * Method that clears the selected square on the board.
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (selectedSquare.getNumber() != 0 && selectedSquare.getFilled() == false) {
@@ -138,31 +164,48 @@ public class SudokuGUI
 		buttons.add(clearButton);
 		buttonPanel.add(clearButton);
 		
-		sudokuFrame.add(selectedSquareLabel, BorderLayout.NORTH);
+		sudokuFrame.add(labelDisplay, BorderLayout.NORTH);
 		sudokuFrame.add(sudokuBoard, BorderLayout.CENTER);
 		sudokuFrame.add(buttonPanel, BorderLayout.SOUTH);
 		
 		sudokuFrame.setVisible(true);
 		sudokuBoard.setVisible(true);
 		buttonPanel.setVisible(true);
+		
+		beginGame = System.currentTimeMillis();
 	}
 	
+	/**
+	 * Compares the puzzle process with the solution puzzle.
+	 * 
+	 * @return true if puzzle matches solution, false otherwise
+	 */
 	public boolean compareToSolution() {
-		if (puzzle.equals(solution))
+		if (empty == 0)
 			return true;
 		
 		return false;
 	}
 	
+	/**
+	 * Determines whether the game has been won or not. Won if puzzle matches solution.
+	 * 
+	 * @return true if game has been won, false otherwise
+	 */
 	public boolean gameWon() {
 		if (compareToSolution() == true) {
-			gameWon = true;
+			endGame = System.currentTimeMillis();
+			
+//			long totalTime = endGame - beginGame;
 			return true;
 		}
 		
 		return false;
 	}
 	
+	/**
+	 * Uploads data such as puzzleID, puzzle difficulty, time spent, etc. to MySQL database
+	 */
 	public void uploadToDatabase() {
 		
 	}
