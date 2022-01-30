@@ -35,11 +35,13 @@ public class LaunchGUI {
 		launchFrame.setSize(600, 600);
 		launchFrame.setLayout(new FlowLayout());
 		launchFrame.setResizable(false);
+		launchFrame.setLocationRelativeTo(null);
 		
 		selectPuzzle = new JLabel("Select Puzzle");
 		launchFrame.add(selectPuzzle);
 		
 		easy = new JButton("Easy");
+		easy.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 		int[][] easySudoku = {
 				  { 0, 0, 4, 0, 5, 0, 0, 0, 0 },
 				  { 9, 0, 0, 7, 3, 4, 6, 0, 0 },
@@ -65,6 +67,7 @@ public class LaunchGUI {
 		launchFrame.add(easy);
 		
 		medium = new JButton("Medium");
+		medium.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 		int[][] mediumSudoku = {
 				  { 0, 0, 0, 6, 0, 0, 0, 0, 0 },
 				  { 0, 0, 0, 0, 0, 0, 5, 0, 1 },
@@ -90,27 +93,28 @@ public class LaunchGUI {
 		launchFrame.add(medium);
 		
 		hard = new JButton("Hard");
+		hard.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 		int[][] hardSudoku = {
-				  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				  { 0, 0, 0, 0, 0, 3, 0, 8, 5 },
-				  { 0, 0, 1, 0, 2, 0, 0, 0, 0 },
-				  
-				  { 0, 0, 0, 5, 0, 7, 0, 0, 0 },
-				  { 0, 0, 4, 0, 0, 0, 1, 0, 0 },
-				  { 0, 9, 0, 0, 0, 0, 0, 0, 0 },
-				  
-				  { 5, 0, 0, 0, 0, 0, 0, 7, 3 },
-				  { 0, 0, 2, 0, 1, 0, 0, 0, 0 },
-				  { 0, 0, 0, 0, 4, 0, 0, 0, 9 }
-//				{9, 8, 7, 6, 5, 4, 3, 2, 1}, 
-//				{2, 4, 6, 1, 7, 3, 9, 8, 5},
-//				{3, 5, 1, 9, 2, 8, 7, 4, 6},
-//				{1, 2, 8, 5, 3, 7, 6, 9, 4},
-//				{6, 3, 4, 8, 9, 2, 1, 5, 7},
-//				{7, 9, 5, 4, 6, 1, 8, 3, 2},
-//				{5, 1, 9, 2, 8, 6, 4, 7, 3},
-//				{4, 7, 2, 3, 1, 9, 5, 6, 8},
-//				{8, 6, 3, 7, 4, 5, 2, 1, 0}
+//				  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+//				  { 0, 0, 0, 0, 0, 3, 0, 8, 5 },
+//				  { 0, 0, 1, 0, 2, 0, 0, 0, 0 },
+//				  
+//				  { 0, 0, 0, 5, 0, 7, 0, 0, 0 },
+//				  { 0, 0, 4, 0, 0, 0, 1, 0, 0 },
+//				  { 0, 9, 0, 0, 0, 0, 0, 0, 0 },
+//				  
+//				  { 5, 0, 0, 0, 0, 0, 0, 7, 3 },
+//				  { 0, 0, 2, 0, 1, 0, 0, 0, 0 },
+//				  { 0, 0, 0, 0, 4, 0, 0, 0, 9 }
+				{9, 8, 7, 6, 5, 4, 3, 2, 1}, 
+				{2, 4, 6, 1, 7, 3, 9, 8, 5},
+				{3, 5, 1, 9, 2, 8, 7, 4, 6},
+				{1, 2, 8, 5, 3, 7, 6, 9, 4},
+				{6, 3, 4, 8, 9, 2, 1, 5, 7},
+				{7, 9, 5, 4, 6, 1, 8, 3, 2},
+				{5, 1, 9, 2, 8, 6, 4, 7, 3},
+				{4, 7, 2, 3, 1, 9, 5, 6, 8},
+				{8, 6, 3, 7, 4, 5, 2, 1, 0}
 			};
 		hard.addActionListener(new ActionListener() {
 

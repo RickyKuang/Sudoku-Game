@@ -173,6 +173,42 @@ public class SudokuSolver {
 		this.invalidCol = invalidCol;
 	}
 	
+	public boolean puzzleEquals(int[][] puzzle, int[][] solution) {
+		for (int i = 0; i < puzzle.length; i++) {
+			for (int j = 0; j < puzzle.length; j++) {
+				if (puzzle[i][j] != solution[i][j])
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public int[][] copyPuzzle() {
+		int[][] copy = new int[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				copy[i][j] = puzzle[i][j];
+			}
+		}
+		
+		return copy;
+	}
+	
+	public void printPuzzle(int[][] p) {
+		String puzzleStr = "";
+		for (int i = 0; i < p.length; i++) {
+			String rowStr = "{";
+			for (int j = 0; j < p.length-1; j++) {
+				rowStr += p[i][j] + ", ";
+			}
+			
+			rowStr += p[i][8] + "}\n";
+			puzzleStr += rowStr;
+		}
+		
+		System.out.println(puzzleStr);
+	}
+	
 	public static void main(String[] args) {
 		int[][] filledSudoku = {
 				{9, 8, 7, 6, 5, 4, 3, 2, 1}, 

@@ -2,6 +2,7 @@ package sudoku;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -23,11 +24,9 @@ public class SudokuGUI
 	private ArrayList<JButton> buttons;
 	
 	// Other
-	private int empty;
+	private SudokuSolver solver;
 	private int[][] puzzle;
 	private int[][] solution;
-	private long beginGame;
-	private long endGame;
 	
 	/**
 	 * Constructor for GUI of Sudoku board.
@@ -36,11 +35,13 @@ public class SudokuGUI
 	 */
 	public SudokuGUI(int[][] puzzle) {
 		// Solve puzzle with solver
-		this.empty = 81;
 		this.puzzle = puzzle;
-		this.solution = puzzle.clone();
-		SudokuSolver solver = new SudokuSolver(this.solution);
-		solution = solver.getPuzzle();
+		
+		solver = new SudokuSolver(puzzle);
+		this.solution = solver.copyPuzzle();
+		
+		SudokuSolver solSolver = new SudokuSolver(solution);
+		solSolver.solvePuzzle();
 		
 		//==================================== FRAME ====================================//
 		sudokuFrame = new JFrame();
@@ -49,12 +50,15 @@ public class SudokuGUI
 		sudokuFrame.setLayout(new BorderLayout());
 		sudokuFrame.setTitle("Sudoku");
 		sudokuFrame.setResizable(false);
+		sudokuFrame.setLocationRelativeTo(null);
 		
 		//==================================== BOARD PANEL ====================================//
 		sudokuBoard = new JPanel(new GridLayout(9,9));
 		sudokuBoard.setSize(new Dimension(400, 400));
 		sudokuSquareButtons = new SudokuSquare[9][9];
-		labelDisplay = new JLabel("No Selection");
+		labelDisplay = new JLabel("Select a Square");
+		labelDisplay.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		labelDisplay.setHorizontalAlignment(JLabel.CENTER);
 		selectedSquare = new SudokuSquare(0, 0, 0, false);
 
 		for (int i = 0; i < 9; i++) {
@@ -64,10 +68,10 @@ public class SudokuGUI
 				if (puzzle[i][j] != 0) {
 					cellNumber = puzzle[i][j];
 					filled = true;
-					empty--;
 				}
 				
 				SudokuSquare sudokuSquare = new SudokuSquare(cellNumber, i+1, j+1, filled);
+				sudokuSquare.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 				
 				if (filled == true) {
 					sudokuSquare.setText(sudokuSquare.getNumber() + "");
@@ -104,11 +108,12 @@ public class SudokuGUI
 		}
 		
 		//==================================== Buttons 1-9 =====================================//
-		buttonPanel = new JPanel(new GridLayout(3, 4));
+		buttonPanel = new JPanel(new GridLayout(5, 2));
 		buttonPanel.setBackground(new Color(255, 150, 150));
 		buttons = new ArrayList<JButton>();
 		for (int i = 0; i < 9; i++) {
 			JButton digButton = new JButton(Integer.toString(i+1));
+			digButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 			digButton.setPreferredSize(new Dimension(30,30));
 			
 			digButton.addActionListener(new ActionListener() {
@@ -131,7 +136,9 @@ public class SudokuGUI
 						else {
 							selectedSquare.setNumber(Integer.parseInt(digButton.getText()));
 							selectedSquare.setText("" + digButton.getText());
-							empty--;
+							solution[selectedSquare.getRow()-1][selectedSquare.getColumn()-1] = selectedSquare.getNumber();
+//							solver.printPuzzle(solver.getPuzzle());
+//							solver.printPuzzle(solution);
 							
 							if (gameWon())
 								labelDisplay.setText("GAME WON. THANKS FOR PLAYING");
@@ -146,6 +153,7 @@ public class SudokuGUI
 		}
 		
 		JButton clearButton = new JButton("Clear");
+		clearButton.setFont(new Font("Comic San MS", Font.PLAIN, 20));
 		clearButton.setPreferredSize(new Dimension(30,30));
 		clearButton.addActionListener(new ActionListener() {
 
@@ -171,8 +179,6 @@ public class SudokuGUI
 		sudokuFrame.setVisible(true);
 		sudokuBoard.setVisible(true);
 		buttonPanel.setVisible(true);
-		
-		beginGame = System.currentTimeMillis();
 	}
 	
 	/**
@@ -181,7 +187,7 @@ public class SudokuGUI
 	 * @return true if puzzle matches solution, false otherwise
 	 */
 	public boolean compareToSolution() {
-		if (empty == 0)
+		if (solver.puzzleEquals(puzzle, solution))
 			return true;
 		
 		return false;
@@ -194,9 +200,6 @@ public class SudokuGUI
 	 */
 	public boolean gameWon() {
 		if (compareToSolution() == true) {
-			endGame = System.currentTimeMillis();
-			
-//			long totalTime = endGame - beginGame;
 			return true;
 		}
 		
@@ -207,7 +210,17 @@ public class SudokuGUI
 	 * Uploads data such as puzzleID, puzzle difficulty, time spent, etc. to MySQL database
 	 */
 	public void uploadToDatabase() {
-		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SUDOKU", "root", "RK10mysqlroot!");
+			Statement stmt = con.createStatement();
+			
+			String sql = "INSERT INTO RESULTS (userID, puzzleID, difficulty, time) VALUES (0, 0, easy, time)";
+			stmt.executeUpdate(sql);
+			con.close();
+		} catch (Exception exception) {
+			labelDisplay.setText(exception.getMessage());
+		}
 	}
 }
 
