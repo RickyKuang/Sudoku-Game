@@ -53,7 +53,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test);
-		solver.setPuzzleSquare(0, 0, 5);
+		solver.setPuzzleSquare(test, 0, 0, 5);
 		assertArrayEquals(test, result);
 	}
 	
@@ -74,7 +74,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test1);
-		assertFalse(solver.isValidNumber(0, 0));
+		assertFalse(solver.isValidNumber(test1, 0, 0));
 		
 		int[][] test2 = {
 				{ 0, 0, 0, 6, 0, 0, 0, 0, 6 },
@@ -91,7 +91,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test2);
-		assertFalse(solver.isValidNumber(0, 8));
+		assertFalse(solver.isValidNumber(test2, 0, 8));
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test1);
-		assertFalse(solver.checkRow(4, 1));
+		assertFalse(solver.checkRow(test1, 4, 1));
 		
 		int[][] test2 = {
 				{ 0, 0, 0, 6, 0, 0, 0, 0, 0 },
@@ -128,7 +128,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test2);
-		assertFalse(solver.checkRow(7, 3));
+		assertFalse(solver.checkRow(test2, 7, 3));
 	}
 	
 	@Test
@@ -148,7 +148,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test1);
-		assertFalse(solver.checkColumn(8, 1));
+		assertFalse(solver.checkColumn(test1, 8, 1));
 		
 		int[][] test2 = {
 				{ 4, 0, 0, 6, 0, 0, 0, 0, 0 },
@@ -165,7 +165,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test2);
-		assertFalse(solver.checkColumn(0, 0));
+		assertFalse(solver.checkColumn(test2, 0, 0));
 	}
 	
 	@Test 
@@ -185,7 +185,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test1);
-		assertFalse(solver.checkBox(0, 0));
+		assertFalse(solver.checkBox(test1, 0, 0));
 		
 		int[][] test2 = {
 				{ 0, 0, 0, 6, 0, 0, 0, 0, 0 },
@@ -202,7 +202,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test2);
-		assertFalse(solver.checkBox(8, 7));
+		assertFalse(solver.checkBox(test2, 8, 7));
 	}
 	
 	@Test
@@ -222,7 +222,7 @@ class SudokuSolverTest {
 		};
 		
 		solver = new SudokuSolver(test);
-		solver.solvePuzzle();
+		solver.solvePuzzle(test);
 		
 		int[][] solution = {
 			{2, 6, 4, 8, 5, 9, 3, 1, 7},
@@ -236,6 +236,6 @@ class SudokuSolverTest {
 			{5, 2, 7, 4, 6, 3, 1, 9, 8}
 		};
 		
-		assertTrue(solver.puzzleEquals(solver.getPuzzle(), solution));
+		assertTrue(solver.puzzleEquals(test, solution));
 	}
 }

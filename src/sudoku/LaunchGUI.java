@@ -59,7 +59,7 @@ public class LaunchGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SudokuGUI(easySudoku);
+				new SudokuGUI(easySudoku, 1, 0);
 				launchFrame.setVisible(false);
 			}
 			
@@ -85,7 +85,7 @@ public class LaunchGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SudokuGUI(mediumSudoku);
+				new SudokuGUI(mediumSudoku, 2, 0);
 				launchFrame.setVisible(false);
 			}
 			
@@ -120,7 +120,7 @@ public class LaunchGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SudokuGUI(hardSudoku);
+				new SudokuGUI(hardSudoku, 3, 0);
 				launchFrame.setVisible(false);
 			}
 			

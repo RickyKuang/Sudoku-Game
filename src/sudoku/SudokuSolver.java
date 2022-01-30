@@ -14,14 +14,14 @@ public class SudokuSolver {
 		this.puzzle = puzzle;
 	}
 	
-	/**
-	 * Getter method for the puzzle instance variable.
-	 * 
-	 * @return puzzle instance variable
-	 */
-	public int[][] getPuzzle() {
-		return puzzle;
-	}
+//	/**
+//	 * Getter method for the puzzle instance variable.
+//	 * 
+//	 * @return puzzle instance variable
+//	 */
+//	public int[][] getPuzzle() {
+//		return puzzle;
+//	}
 	
 	/**
 	 * Setter method for a puzzle square. Takes in row and column numbers, and fills square at coordinate with number.
@@ -30,8 +30,8 @@ public class SudokuSolver {
 	 * @param column Column of the current square being filled.
 	 * @param number Number that will be inserted into square.
 	 */
-	public void setPuzzleSquare(int row, int column, int number) {
-		puzzle[row][column] = number;
+	public void setPuzzleSquare(int[][] board, int row, int column, int number) {
+		board[row][column] = number;
 	}
 	
 	/**
@@ -39,19 +39,19 @@ public class SudokuSolver {
 	 * 
 	 * @return true if puzzle can be solved, or if number is valid in position. false if can't be solved or number is invalid
 	 */
-	public boolean solvePuzzle() {
-		for (int i = 0; i < puzzle.length; i++) 
+	public boolean solvePuzzle(int[][] board) {
+		for (int i = 0; i < board.length; i++) 
 		{
-			for (int j = 0; j < puzzle[i].length; j++) 
+			for (int j = 0; j < board[i].length; j++) 
 			{
-				if (puzzle[i][j] == 0) {
+				if (board[i][j] == 0) {
 					for (int k = 1; k <= 9; k++) {
-						puzzle[i][j] = k;
+						board[i][j] = k;
 						
-						if (isValidNumber(i, j) && solvePuzzle())
+						if (isValidNumber(board, i, j) && solvePuzzle(board))
 							return true;
 						
-						puzzle[i][j] = 0;
+						board[i][j] = 0;
 					}
 					
 					return false;
@@ -69,10 +69,10 @@ public class SudokuSolver {
 	 * @param column Column of the current square being checked.
 	 * @return true if there is no conflict, false if there is conflict
 	 */
-	public boolean isValidNumber(int row, int column) {
-		if (checkRow(row, column) == true
-				&& checkColumn(row, column) == true
-				&& checkBox(row, column) == true)
+	public boolean isValidNumber(int[][] board, int row, int column) {
+		if (checkRow(board, row, column) == true
+				&& checkColumn(board, row, column) == true
+				&& checkBox(board, row, column) == true)
 			return true;
 		
 		return false;
@@ -85,9 +85,9 @@ public class SudokuSolver {
 	 * @param column Column of the current square
 	 * @return true if there is no conflict, false if there is conflict
 	 */
-	public boolean checkRow(int row, int column) {
-		for (int i = 0; i < puzzle.length; i++) {
-			if (puzzle[row][i] == puzzle[row][column] && i != column) {
+	public boolean checkRow(int[][] board, int row, int column) {
+		for (int i = 0; i < board.length; i++) {
+			if (board[row][i] == board[row][column] && i != column) {
 				this.setInvalidRow(row);
 				this.setInvalidCol(i);
 				return false;
@@ -103,9 +103,9 @@ public class SudokuSolver {
 	 * @param column Column of the current square
 	 * @return true if there is no conflict, false if there is conflict
 	 */
-	public boolean checkColumn(int row, int column) {
-		for (int i = 0; i < puzzle.length; i++) {
-			if (puzzle[i][column] == puzzle[row][column] && i != row) {
+	public boolean checkColumn(int[][] board, int row, int column) {
+		for (int i = 0; i < board.length; i++) {
+			if (board[i][column] == board[row][column] && i != row) {
 				this.setInvalidRow(i);
 				this.setInvalidCol(column);
 				return false;
@@ -121,13 +121,13 @@ public class SudokuSolver {
 	 * @param column Column of the current square
 	 * @return true if there is no conflict, false if there is conflict
 	 */
-	public boolean checkBox(int row, int column) {
+	public boolean checkBox(int[][] board, int row, int column) {
 		int startRow = (row/3) * 3;
 		int startColumn = (column/3) * 3;
 		
 		for (int i = startRow; i < startRow + 3; i++) {
 			for (int j = startColumn; j < startColumn + 3; j++) {
-				if (puzzle[i][j] == puzzle[row][column] && i != row && j != column) {
+				if (board[i][j] == board[row][column] && i != row && j != column) {
 					this.setInvalidRow(i);
 					this.setInvalidCol(j);
 					return false;
@@ -222,18 +222,22 @@ public class SudokuSolver {
 				{8, 6, 3, 7, 4, 5, 2, 1, 0}
 			};
 		
-		SudokuSolver ss = new SudokuSolver(filledSudoku);
-		ss.solvePuzzle();
-		String puzzle = "";
-		for (int i = 0; i < 9; i++) {
-			String row = "{";
-			for (int j = 0; j < 9; j++) {
-				row += ss.puzzle[i][j] + ", ";
-			}
-			row += "}";
-			puzzle += row + "\n";
-		}
+		int[][] mediumSudoku = {
+				  { 0, 0, 0, 6, 0, 0, 0, 0, 0 },
+				  { 0, 0, 0, 0, 0, 0, 5, 0, 1 },
+				  { 3, 6, 9, 0, 8, 0, 4, 0, 0 },
+				  
+				  { 0, 0, 0, 0, 0, 6, 8, 0, 0 },
+				  { 0, 0, 0, 1, 3, 0, 0, 0, 9 },
+				  { 4, 0, 5, 0, 0, 9, 0, 0, 0 },
+				  
+				  { 0, 0, 0, 0, 0, 0, 3, 0, 0 },
+				  { 0, 0, 6, 0, 0, 7, 0, 0, 0 },
+				  { 1, 0, 0, 3, 4, 0, 0, 0, 0 }
+			};
 		
-		System.out.println(puzzle);
+		SudokuSolver ss = new SudokuSolver(filledSudoku);
+		ss.solvePuzzle(mediumSudoku);
+		ss.printPuzzle(mediumSudoku);
 	}
 }

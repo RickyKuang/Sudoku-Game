@@ -33,15 +33,15 @@ public class SudokuGUI
 	 * 
 	 * @param puzzle Creates board based on puzzle in the parameter.
 	 */
-	public SudokuGUI(int[][] puzzle) {
+	public SudokuGUI(int[][] board, int puzzleID, int userID) {
 		// Solve puzzle with solver
-		this.puzzle = puzzle;
+		this.puzzle = board;
 		
-		solver = new SudokuSolver(puzzle);
+		solver = new SudokuSolver(board);
 		this.solution = solver.copyPuzzle();
 		
 		SudokuSolver solSolver = new SudokuSolver(solution);
-		solSolver.solvePuzzle();
+		solSolver.solvePuzzle(solution);
 		
 		//==================================== FRAME ====================================//
 		sudokuFrame = new JFrame();
@@ -124,13 +124,13 @@ public class SudokuGUI
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (selectedSquare.getFilled() == false) {
-						solver.setPuzzleSquare(selectedSquare.getRow()-1, selectedSquare.getColumn()-1, Integer.parseInt(digButton.getText()));
+						solver.setPuzzleSquare(puzzle, selectedSquare.getRow()-1, selectedSquare.getColumn()-1, Integer.parseInt(digButton.getText()));
 						
 						// check validity
-						if (!solver.isValidNumber(selectedSquare.getRow()-1, selectedSquare.getColumn()-1)) {
+						if (!solver.isValidNumber(puzzle, selectedSquare.getRow()-1, selectedSquare.getColumn()-1)) {
 							labelDisplay.setText("CONFLICT with: Row " + (solver.getInvalidRow()+1) + ", Column " + (solver.getInvalidCol()+1));
 							
-							solver.setPuzzleSquare(selectedSquare.getRow()-1, selectedSquare.getColumn()-1, 0);
+							solver.setPuzzleSquare(puzzle, selectedSquare.getRow()-1, selectedSquare.getColumn()-1, 0);
 						}
 						
 						else {
