@@ -8,7 +8,6 @@ import javax.swing.*;
  * @author Ricky Kuang
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class SudokuSquare extends JButton {
 	
 	private int number;
