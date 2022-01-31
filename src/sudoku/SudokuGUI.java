@@ -27,6 +27,10 @@ public class SudokuGUI
 	private SudokuSolver solver;
 	private int[][] puzzle;
 	private int[][] solution;
+	private int userID;
+	private int puzzleID;
+	private JFrame viewLeaderboard;
+	private JLabel leaderboardLabel;
 	
 	/**
 	 * Constructor for GUI of Sudoku board.
@@ -36,13 +40,14 @@ public class SudokuGUI
 	public SudokuGUI(int[][] board, int puzzleID, int userID) {
 		// Solve puzzle with solver
 		this.puzzle = board;
-		
 		solver = new SudokuSolver(board);
-		this.solution = solver.copyPuzzle();
+		solution = solver.copyPuzzle();
 		
 		SudokuSolver solSolver = new SudokuSolver(solution);
 		solSolver.solvePuzzle(solution);
 		
+		this.userID = userID;
+		this.puzzleID = puzzleID;
 		//==================================== FRAME ====================================//
 		sudokuFrame = new JFrame();
 		sudokuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,11 +142,22 @@ public class SudokuGUI
 							selectedSquare.setNumber(Integer.parseInt(digButton.getText()));
 							selectedSquare.setText("" + digButton.getText());
 							solution[selectedSquare.getRow()-1][selectedSquare.getColumn()-1] = selectedSquare.getNumber();
-//							solver.printPuzzle(solver.getPuzzle());
-//							solver.printPuzzle(solution);
 							
-							if (gameWon())
+							if (gameWon()) {
 								labelDisplay.setText("GAME WON. THANKS FOR PLAYING");
+								
+//								viewLeaderboard = new JFrame();
+//								viewLeaderboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//								viewLeaderboard.setSize(600, 600);
+//								viewLeaderboard.setTitle("Leaderboard");
+//								viewLeaderboard.setResizable(false);
+//								viewLeaderboard.setLocationRelativeTo(null);
+//								
+//								leaderboardLabel.setText(retrieveLeaderboard());
+//								
+//								viewLeaderboard.add(leaderboardLabel);
+//								viewLeaderboard.setVisible(true);
+							}
 						}
 					}
 				}
@@ -172,6 +188,9 @@ public class SudokuGUI
 		buttons.add(clearButton);
 		buttonPanel.add(clearButton);
 		
+		leaderboardLabel = new JLabel("Leaderboard");
+		leaderboardLabel.setBounds(150, 100, 200, 100);
+		
 		sudokuFrame.add(labelDisplay, BorderLayout.NORTH);
 		sudokuFrame.add(sudokuBoard, BorderLayout.CENTER);
 		sudokuFrame.add(buttonPanel, BorderLayout.SOUTH);
@@ -200,6 +219,7 @@ public class SudokuGUI
 	 */
 	public boolean gameWon() {
 		if (compareToSolution() == true) {
+			uploadToDatabase();
 			return true;
 		}
 		
@@ -215,12 +235,37 @@ public class SudokuGUI
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SUDOKU", "root", "RK10mysqlroot!");
 			Statement stmt = con.createStatement();
 			
-			String sql = "INSERT INTO RESULTS (userID, puzzleID, difficulty, time) VALUES (0, 0, easy, time)";
+			String sql = "INSERT INTO RESULTS (userID, puzzleID) VALUES (" + userID + ", " + puzzleID + ")";
 			stmt.executeUpdate(sql);
 			con.close();
 		} catch (Exception exception) {
 			labelDisplay.setText(exception.getMessage());
 		}
 	}
+	
+//	public String retrieveLeaderboard() {
+//		String leaderboardStr = "";
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//	        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/CAR_RENTAL", "root", "RK10mysqlroot!");
+//	        Statement stmt = con.createStatement();
+//			
+//			String sql = "SELECT * FROM RESULTS";
+//			
+//			ResultSet rs = stmt.executeQuery(sql);
+//	        leaderboardStr = "<html>Leaderboard<br>"
+//	           		+ "(ID, Puzzle, Difficulty, Time)<br>"
+//	           		+ "--------------------------<br>";
+//	        while (rs.next()) {
+//	        	   leaderboardStr += rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getTimestamp(4) + "<br>";
+//	        }
+//			
+//			con.close();
+//		} catch (Exception exception) {
+//			exception.getMessage();
+//		}
+//		
+//		return leaderboardStr + "</html>";
+//	}
 }
 
