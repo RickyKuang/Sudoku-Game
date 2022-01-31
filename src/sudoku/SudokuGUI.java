@@ -6,6 +6,13 @@ import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
+/**
+ * Sudoku Board GUI. Launched through the LaunchGUI after selecting puzzle difficulty. Data uploaded to SQL database after game is won.
+ * Plan(s): allow user to view leaderboard
+ * 
+ * @author Ricky Kuang
+ * @version 1.0
+ */
 public class SudokuGUI 
 {
 	// Frame and Board
@@ -29,8 +36,8 @@ public class SudokuGUI
 	private int[][] solution;
 	private int userID;
 	private int puzzleID;
-	private JFrame viewLeaderboard;
-	private JLabel leaderboardLabel;
+//	private JFrame viewLeaderboard;
+//	private JLabel leaderboardLabel;
 	
 	/**
 	 * Constructor for GUI of Sudoku board.
@@ -188,8 +195,8 @@ public class SudokuGUI
 		buttons.add(clearButton);
 		buttonPanel.add(clearButton);
 		
-		leaderboardLabel = new JLabel("Leaderboard");
-		leaderboardLabel.setBounds(150, 100, 200, 100);
+//		leaderboardLabel = new JLabel("Leaderboard");
+//		leaderboardLabel.setBounds(150, 100, 200, 100);
 		
 		sudokuFrame.add(labelDisplay, BorderLayout.NORTH);
 		sudokuFrame.add(sudokuBoard, BorderLayout.CENTER);

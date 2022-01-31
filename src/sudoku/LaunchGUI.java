@@ -5,6 +5,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
+/**
+ * Sudoku App launcher. Allows user to enter name into database and select difficulty of Sudoku puzzle.
+ * Plan(s): allow returning user option, better UI for the launcher
+ * 
+ * @author Ricky Kuang
+ * @version 1.0
+ */
 public class LaunchGUI {
 
 	private JFrame launchFrame;

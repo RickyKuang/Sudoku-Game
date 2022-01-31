@@ -4,6 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tester class for Sudoku Solver methods.
+ * 
+ * @author Ricky Kuang
+ * @version 1.0
+ */
 class SudokuSolverTest {
 	
 	SudokuSolver solver;

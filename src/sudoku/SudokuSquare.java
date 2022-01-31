@@ -2,6 +2,12 @@ package sudoku;
 
 import javax.swing.*;
 
+/**
+ * Sudoku Square class that extends JButton. Has additional variables/methods for the purpose of Sudoku Square/Cell.
+ * 
+ * @author Ricky Kuang
+ * @version 1.0
+ */
 @SuppressWarnings("serial")
 public class SudokuSquare extends JButton {
 	

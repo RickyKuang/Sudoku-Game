@@ -1,5 +1,11 @@
 package sudoku;
 
+/**
+ * Sudoku Solver, solves a 9x9 int array that represents Sudoku. Includes other functionalities like printing.
+ * 
+ * @author Ricky Kuang
+ * @version 1.0
+ */
 public class SudokuSolver {
 	int[][] puzzle;
 	private int invalidRow;
