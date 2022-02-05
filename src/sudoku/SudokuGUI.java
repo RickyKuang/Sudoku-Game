@@ -188,6 +188,8 @@ public class SudokuGUI
 				if (selectedSquare.getNumber() != 0 && selectedSquare.getFilled() == false) {
 					selectedSquare.setNumber(0);
 					selectedSquare.setText("");
+					
+					solver.setPuzzleSquare(puzzle, selectedSquare.getRow()-1, selectedSquare.getColumn()-1, 0);
 				}
 			}
 			
