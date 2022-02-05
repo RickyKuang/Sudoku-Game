@@ -4,6 +4,9 @@ This project was built with an accumulation of concepts that I picked up in some
 
 ## Demo of Sudoku App
 - Demonstrates conflicts with row/column/same 3x3 square in accordance to Sudoku Rules.
+- Shows what happens when the player successfully solves the puzzle.
+
+<img src="https://user-images.githubusercontent.com/62784941/152631704-d4afd2dc-69a4-43b3-a696-e95a3040da25.gif" width="400" height="400"/>
 
 <img src="https://user-images.githubusercontent.com/62784941/152631617-7da903c8-bf5c-482b-9689-4e1f2d4d3502.gif" width="400" height="400"/>
 
