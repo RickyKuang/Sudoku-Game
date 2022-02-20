@@ -241,7 +241,7 @@ public class SudokuGUI
 	public void uploadToDatabase() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SUDOKU", "root", "RK10mysqlroot!");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SUDOKU", "root", "password");
 			Statement stmt = con.createStatement();
 			
 			String sql = "INSERT INTO RESULTS (userID, puzzleID) VALUES (" + userID + ", " + puzzleID + ")";
